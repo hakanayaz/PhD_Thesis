@@ -1,27 +1,33 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.mlab import griddata
+from matplotlib import cm
 
 
 def main():
 
     # Reading the .txt file
     # .txt file must contain x,y,z values with that order
-    x, y, z = np.loadtxt('Section1.txt').T
+    X, Y, Z = np.loadtxt('Section1.txt').T
 
-    # Working...
-    #print("First 10 Z values are = \n", z[0:10])
-
-    a = x[0:100]
-    b = y[0:100]
-    c = z[0:100]
+    # Sampling the main data
+    x = X[0:1000]
+    y = Y[0:1000]
+    z = Z[0:1000]
 
     # fig = plt.figure()
     # ax = fig.add_subplot(111, projection='3d')
+    fig = plt.figure()
+    ax = Axes3D(fig)
 
     # Plot a basic wireframe result of the first 100 points
-    Axes3D.plot_wireframe(a, b, c)
-    #Axes3D.plot_wireframe(a, b, c, rstride=10, cstride=10)
+    # Axes3D.plot_wireframe(a, b, c)
+    ax.scatter3D(x, y, z, c=z, cmap=plt.cm.jet)
+
+    # ax.plot_wireframe(x, y, z, rstride=10, cstride=10)
+
+    # Ploting the data
     plt.show()
 
 
