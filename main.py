@@ -2,24 +2,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math as m
 from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.mlab import griddata
+# from matplotlib.mlab import griddata
 from matplotlib import cm
 
 
 def main():
-
     # Reading the .txt file
     # .txt file must contain x,y,z values with that order
     X, Y, Z = np.loadtxt('Section1.txt').T
 
     # Sampling the main data to see
-    x = X[0:72]
-    y = Y[0:72]
-    z = Z[0:72]
+    x = X[0:100]
+    y = Y[0:100]
+    z = Z[0:100]
 
     ############  PLOATING  #############
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+    ax = fig.add_subplot(121, projection='3d')
     # fig = plt.figure()
     # ax = Axes3D(fig)
 
@@ -32,12 +31,12 @@ def main():
     # [TOSEE] Plotting the data
     # plt.show()
 
-
     ############  ROTATING  #############
     # Rotating the Point Cloud to be able to calculate the area
 
     # Finding the [theta]
-    theta = m.pi/6 * -1
+    theta = m.pi / 6 * -1
+
     # print(theta)
 
     # Z Axis rotation definition
@@ -48,14 +47,37 @@ def main():
 
     Rot_Matrix_Z = Rz(theta)
     Rot_Points = []
+
     # print(Rot_Matrix_Z)
+    x_rot = []
+    y_rot = []
+    z_rot = []
     for i in range(len(x)):
-        Point = np.transpose([X[i], Y[i], Z[i]])
-        Rot_Point = (Point * Rot_Matrix_Z)
-        Rot_Points.append(Rot_Point)  # Store value retrieved from a for Loop
+        point = [[x[i]], [y[i]], [z[i]]]
 
-    # Find efficient way to store values and plot calculate :)
+        # Utilize numpy operation for efficency
+        rotated_mat = np.matmul(Rot_Matrix_Z, point)
 
+        arr_mat = np.squeeze(np.asarray(rotated_mat))
+        x_prime = arr_mat[0]
+        y_prime = arr_mat[1]
+        z_prime = arr_mat[2]
+        x_rot.append(x_prime)
+        y_rot.append(y_prime)
+        z_rot.append(z_prime)
+
+    ax2 = fig.add_subplot(122, projection='3d')
+    # fig = plt.figure()
+    # ax = Axes3D(fig)
+
+    # Plot sampled scatter result
+    ax2.set_xlabel('X Label', fontsize=10)
+    ax2.set_ylabel('Y Label', fontsize=10)
+    ax2.set_zlabel('Z Label', fontsize=10)
+    ax2.scatter3D(x_rot, y_rot, z_rot, c=z_rot, cmap=plt.cm.jet)
+
+    # [TOSEE] Plotting the data
+    plt.show()
 
 
 if __name__ == '__main__':
