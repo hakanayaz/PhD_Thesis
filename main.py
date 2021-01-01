@@ -1,5 +1,5 @@
-import numpy
-import matplotlib.pyplot
+import numpy as np
+import matplotlib.pyplot as plt
 import math
 from mpl_toolkits.mplot3d import Axes3D
 # from matplotlib.mlab import griddata
@@ -9,7 +9,7 @@ from matplotlib import cm
 def main():
     # Reading the .txt file
     # .txt file must contain x,y,z values with that order
-    X, Y, Z = numpy.loadtxt('Section1.txt').T
+    X, Y, Z = np.loadtxt('Section1.txt').T
 
     # Sampling the main data to see
     x = X[0:100]
@@ -17,14 +17,14 @@ def main():
     z = Z[0:100]
 
     ############  PLOATING  #############
-    fig = matplotlib.pyplot.figure()
+    fig = plt.figure()
     ax = fig.add_subplot(121, projection='3d')
 
     # Plot sampled scatter result
     ax.set_xlabel('X Label', fontsize=10)
     ax.set_ylabel('Y Label', fontsize=10)
     ax.set_zlabel('Z Label', fontsize=10)
-    ax.scatter3D(x, y, z, c=z, cmap=matplotlib.pyplot.cm.jet)
+    ax.scatter3D(x, y, z, c=z, cmap=plt.cm.jet)
 
     # [TOSEE] Plotting the data
     # plt.show()
@@ -37,7 +37,7 @@ def main():
 
     # Z Axis rotation definition
     def Rz(theta):
-        return numpy.matrix([[math.cos(theta), -math.sin(theta), 0],
+        return np.matrix([[math.cos(theta), -math.sin(theta), 0],
                           [math.sin(theta), math.cos(theta), 0],
                           [0, 0, 1]])
 
@@ -51,9 +51,9 @@ def main():
     # for i in range(len(x)):
         # point = [[x[i]], [y[i]], [z[i]]]
 
-        # # Utilize numpy.matmul operation for efficiency because matmul using C
-        # rotated_mat = numpy.matmul(Rot_Matrix_Z, point)
-        # arr_mat = numpy.squeeze(numpy.asarray(rotated_mat))
+        # # Utilize np.matmul operation for efficiency because matmul using C
+        # rotated_mat = np.matmul(Rot_Matrix_Z, point)
+        # arr_mat = np.squeeze(np.asarray(rotated_mat))
         # x_prime = arr_mat[0]
         # y_prime = arr_mat[1]
         # z_prime = arr_mat[2]
@@ -71,10 +71,10 @@ def main():
     # ax2.set_xlabel('X Label', fontsize=10)
     # ax2.set_ylabel('Y Label', fontsize=10)
     # ax2.set_zlabel('Z Label', fontsize=10)
-    # ax2.scatter3D(x_rot, y_rot, z_rot, c=z_rot, cmap=matplotlib.pyplot.cm.jet)
+    # ax2.scatter3D(x_rot, y_rot, z_rot, c=z_rot, cmap=plt.cm.jet)
 
     # # [TOSEE] Plotting the data
-    # matplotlib.pyplot.show()
+    # plt.show()
 
     ##################################################################################
 
@@ -94,9 +94,9 @@ def main():
         for i in range(len(x)):
             point = [[x[i]], [y[i]], [z[i]]]
 
-            # Utilize numpy.matmul operation for efficiency because matmul using C
-            rotated_mat = numpy.matmul(Rot_Matrix_Z, point)
-            arr_mat = numpy.squeeze(numpy.asarray(rotated_mat))
+            # Utilize np.matmul operation for efficiency because matmul using C
+            rotated_mat = np.matmul(Rot_Matrix_Z, point)
+            arr_mat = np.squeeze(np.asarray(rotated_mat))
             x_prime = arr_mat[0]
             y_prime = arr_mat[1]
             z_prime = arr_mat[2]
@@ -118,10 +118,10 @@ def main():
     ax2.set_xlabel('X Label', fontsize=10)
     ax2.set_ylabel('Y Label', fontsize=10)
     ax2.set_zlabel('Z Label', fontsize=10)
-    ax2.scatter3D(x_rot, y_rot, z_rot, c=z_rot, cmap=matplotlib.pyplot.cm.jet)
+    ax2.scatter3D(x_rot, y_rot, z_rot, c=z_rot, cmap=plt.cm.jet)
 
     # [TOSEE] Plotting the data
-    # matplotlib.pyplot.show()
+    # plt.show()
 
 
 if __name__ == '__main__':
