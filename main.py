@@ -115,23 +115,30 @@ def main():
     rotated_data_y = rot_data_full[1]
     rotated_data_z = rot_data_full[2]
 
-    # Full data plot
-    figure = plt.figure()
-    ax_full = Axes3D(figure)
-    ax_full.scatter3D(rotated_data_x, rotated_data_y, rotated_data_z, c=rotated_data_z, cmap=plt.cm.jet)
-    plt.show()
+    # # Full Data Plot
+    # Full_Plot = plt.figure()
+    # ax_full = Axes3D(Full_Plot)
+    # ax_full.scatter3D(rotated_data_x, rotated_data_y, rotated_data_z, c=rotated_data_z, cmap=plt.cm.jet)
+    # plt.show()
 
     ''' Determine the circle points
     This is going to be a function and help me to find the circle points
     After I got the points I will calculate AREA, Perimeter vs...
     '''
     for k in range(1000):
-        diff_xs = []
+        diff_xs_loc = []
         diff_xs1 = np.asarray(rotated_data_x[(k+1)])
         diff_xs0 = np.asarray(rotated_data_x[k])
         x_difference = diff_xs1 - diff_xs0
-        x_circle = np.squeeze(np.asarray(x_difference))
-        #print(x_circle)
+        x_diff_circles = np.squeeze(np.asarray(x_difference))
+        # print(x_circles)
+        if abs(x_diff_circles) > 0.55:
+            diff_xs_loc.append(x_diff_circles)
+        print(diff_xs_loc)
+
+    # I can find the separate circle points but I couldn't divide them to choose
+    # I want to see the number of the range to understand which number each circle has it
+    # After divide into I will calculate the area and perimeter as well !!
 
     '''
     After find the points that represents area use Gauss's area formula to
