@@ -12,11 +12,12 @@ def Rz(theta):
                       [0, 0, 1]])
 
 
-def find_miniumum_degree(x_data, y_data, z_data):
+def make_parallel_X_degree(x_data, y_data, z_data):
     x_difference = []
     for t in range(180):
         # Radian converting
-        theta = (0.0174533 * t)
+        # theta = (0.0174533 * t)
+        theta = t
         Rot_Matrix_Z = Rz(math.degrees(theta))
         x_rot = []
 
@@ -63,13 +64,15 @@ def main():
     # .txt file must contain x,y,z values with that order
     X, Y, Z = np.loadtxt('Section1.txt').T
 
-    # Sampling the main data to see
-    # While choosing the sampling data maximum 2 verticities must be found
-    x = X[0:100]
-    y = Y[0:100]
-    z = Z[0:100]
+    '''
+    Sampling the main data to see while choosing the sampling data maximum 2 verticities must be found 
+    because if we increase the points number we cannot find the right angle that represent parallel to the X
+    axis.
+    '''
+    x_sample_4degree = X[0:200]
+    y_sample_4degree = Y[0:200]
+    z_sample_4degree = Z[0:200]
 
-    ############  PLOATING  #############
     fig = plt.figure()
     ax = fig.add_subplot(121, projection='3d')
 
@@ -77,13 +80,16 @@ def main():
     ax.set_xlabel('X Label', fontsize=10)
     ax.set_ylabel('Y Label', fontsize=10)
     ax.set_zlabel('Z Label', fontsize=10)
-    ax.scatter3D(x, y, z, c=z, cmap=plt.cm.jet)
+    ax.scatter3D(x_sample_4degree, y_sample_4degree, z_sample_4degree, c=z_sample_4degree, cmap=plt.cm.jet)
 
-    min_degree = find_miniumum_degree(x, y, z)
-    rot_data = rotate_data(x, y, z, min_degree)
-    rotated_data_x = rot_data[0]
-    rotated_data_y = rot_data[1]
-    rotated_data_z = rot_data[2]
+    # To be able to calculate angle that needs to rotate and
+    # Make it parallel to the X axis.
+    min_degree = make_parallel_X_degree(x_sample_4degree, y_sample_4degree, z_sample_4degree)
+    rot_data_sample_4degree = rotate_data(x_sample_4degree, y_sample_4degree, z_sample_4degree, min_degree)
+    rotated_data_x_sample = rot_data_sample_4degree[0]
+    rotated_data_y_sample = rot_data_sample_4degree[1]
+    rotated_data_z_sample = rot_data_sample_4degree[2]
+
 
     # Subplot helped me to graph together 122 - 121
     ax2 = fig.add_subplot(122, projection='3d')
@@ -92,10 +98,45 @@ def main():
     ax2.set_xlabel('X Label', fontsize=10)
     ax2.set_ylabel('Y Label', fontsize=10)
     ax2.set_zlabel('Z Label', fontsize=10)
-    ax2.scatter3D(rotated_data_x, rotated_data_y, rotated_data_z, c=rotated_data_z, cmap=plt.cm.jet)
+    ax2.scatter3D(rotated_data_x_sample, rotated_data_y_sample, rotated_data_z_sample,
+                  c=rotated_data_z_sample, cmap=plt.cm.jet)
 
-    # [TOSEE] Plotting the data
+    '''
+    Plotting the data for getting the angle for paralleling the plot to the X axis.
+    Now we have angle can parallel to the X axis.
+    '''
     plt.show()
+
+    ''' FULL DATA Calculation !!
+    After finding the min angle apply to the full data
+    '''
+    rot_data_full = rotate_data(X, Y, Z, min_degree)
+    rotated_data_x = rot_data_full[0]
+    rotated_data_y = rot_data_full[1]
+    rotated_data_z = rot_data_full[2]
+
+    # Full data plot
+    figure = plt.figure()
+    ax_full = Axes3D(figure)
+    ax_full.scatter3D(rotated_data_x, rotated_data_y, rotated_data_z, c=rotated_data_z, cmap=plt.cm.jet)
+    plt.show()
+
+    ''' Determine the circle points
+    This is going to be a function and help me to find the circle points
+    After I got the points I will calculate AREA, Perimeter vs...
+    '''
+    for k in range(1000):
+        diff_xs = []
+        diff_xs1 = np.asarray(rotated_data_x[(k+1)])
+        diff_xs0 = np.asarray(rotated_data_x[k])
+        x_difference = diff_xs1 - diff_xs0
+        x_circle = np.squeeze(np.asarray(x_difference))
+        #print(x_circle)
+
+    '''
+    After find the points that represents area use Gauss's area formula to
+    find the area of the section.
+    '''
 
 
 if __name__ == '__main__':
