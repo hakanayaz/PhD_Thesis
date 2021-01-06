@@ -35,7 +35,7 @@ def make_parallel_X_degree(x_data, y_data, z_data):
 
     # Store the minimum difference
     min_dif = x_difference[min_deg]
-    print(min_deg)
+    print('Paralle to the X axis degeree: ', min_deg)
     return min_deg
 
 
@@ -90,7 +90,6 @@ def main():
     rotated_data_y_sample = rot_data_sample_4degree[1]
     rotated_data_z_sample = rot_data_sample_4degree[2]
 
-
     # Subplot helped me to graph together 122 - 121
     ax2 = fig.add_subplot(122, projection='3d')
 
@@ -115,7 +114,7 @@ def main():
     rotated_data_y = rot_data_full[1]
     rotated_data_z = rot_data_full[2]
 
-    # # Full Data Plot
+    ''' for Full Data Plot  '''
     # Full_Plot = plt.figure()
     # ax_full = Axes3D(Full_Plot)
     # ax_full.scatter3D(rotated_data_x, rotated_data_y, rotated_data_z, c=rotated_data_z, cmap=plt.cm.jet)
@@ -125,20 +124,21 @@ def main():
     This is going to be a function and help me to find the circle points
     After I got the points I will calculate AREA, Perimeter vs...
     '''
-    for k in range(1000):
-        diff_xs_loc = []
+    diff_xs_loc = []
+    point_loc = []
+    for k in range(len(rotated_data_x)-1):
         diff_xs1 = np.asarray(rotated_data_x[(k+1)])
         diff_xs0 = np.asarray(rotated_data_x[k])
         x_difference = diff_xs1 - diff_xs0
         x_diff_circles = np.squeeze(np.asarray(x_difference))
         # print(x_circles)
         if abs(x_diff_circles) > 0.55:
+            point_loc.append(k+1)  # Storing which point number belongs to that
             diff_xs_loc.append(x_diff_circles)
-        print(diff_xs_loc)
+    print('Point Circle Locations are :', point_loc)
+    print('Minimum difference : ', diff_xs_loc)
 
-    # I can find the separate circle points but I couldn't divide them to choose
-    # I want to see the number of the range to understand which number each circle has it
-    # After divide into I will calculate the area and perimeter as well !!
+    # Circle point locations are found !! [point_loc]
 
     '''
     After find the points that represents area use Gauss's area formula to
