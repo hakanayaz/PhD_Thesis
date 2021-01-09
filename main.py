@@ -35,7 +35,8 @@ def make_parallel_X_degree(x_data, y_data, z_data):
 
     # Store the minimum difference
     min_dif = x_difference[min_deg]
-    print('Paralle to the X axis degeree: ', min_deg)
+
+    # print('Parallel to the X axis degree: ', min_deg)
     return min_deg
 
 
@@ -57,6 +58,27 @@ def rotate_data(x_data, y_data, z_data, theta):
         y_rot.append(y_prime)
         z_rot.append(z_prime)
     return x_rot, y_rot, z_rot
+
+
+def point_circle_location(rotated_data_x):
+    # Determine the circle points
+    # This is going to be a function and help me to find the circle points
+    # After I got the points I will calculate AREA, Perimeter vs...
+
+    diff_xs_loc = []
+    point_loc = []
+    for k in range(len(rotated_data_x)-1):
+        diff_xs1 = np.asarray(rotated_data_x[(k+1)])
+        diff_xs0 = np.asarray(rotated_data_x[k])
+        x_difference = diff_xs1 - diff_xs0
+        x_diff_circles = np.squeeze(np.asarray(x_difference))
+        # print(x_circles)
+        if abs(x_diff_circles) > 0.55:
+            point_loc.append(k+1)  # Storing which point number belongs to that
+            diff_xs_loc.append(x_diff_circles)
+    # print('Point Circle Locations are :', point_loc)
+    # Circle point locations are found !! [point_loc]
+    return point_loc
 
 
 def main():
@@ -120,30 +142,24 @@ def main():
     # ax_full.scatter3D(rotated_data_x, rotated_data_y, rotated_data_z, c=rotated_data_z, cmap=plt.cm.jet)
     # plt.show()
 
-    ''' Determine the circle points
-    This is going to be a function and help me to find the circle points
-    After I got the points I will calculate AREA, Perimeter vs...
-    '''
-    diff_xs_loc = []
-    point_loc = []
-    for k in range(len(rotated_data_x)-1):
-        diff_xs1 = np.asarray(rotated_data_x[(k+1)])
-        diff_xs0 = np.asarray(rotated_data_x[k])
-        x_difference = diff_xs1 - diff_xs0
-        x_diff_circles = np.squeeze(np.asarray(x_difference))
-        # print(x_circles)
-        if abs(x_diff_circles) > 0.55:
-            point_loc.append(k+1)  # Storing which point number belongs to that
-            diff_xs_loc.append(x_diff_circles)
-    print('Point Circle Locations are :', point_loc)
-    print('Minimum difference : ', diff_xs_loc)
-
-    # Circle point locations are found !! [point_loc]
+    # Determine the circle points
+    circle_locations = point_circle_location(rotated_data_x)
+    # print(circle_locations)
 
     '''
     After find the points that represents area use Gauss's area formula to
-    find the area of the section.
+    find the area of the section. Find surface Roughness!!
+    Surface roughness is a unitless peace of the equation that's why you can calculate easily
     '''
+
+    # Try to finish height, centroid, and area calculations...
+    section_heights = []
+    for h in range(circle_locations[0]):
+        sec_heights = rotated_data_z[h]
+        section_heights.append(sec_heights)
+    print(len(section_heights))
+    print(np.average(section_heights))
+
 
 
 if __name__ == '__main__':
