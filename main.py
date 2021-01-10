@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.mlab import griddata
+# from matplotlib.mlab import griddata
 from matplotlib import cm
 
 
@@ -126,7 +126,7 @@ def main():
     Plotting the data for getting the angle for paralleling the plot to the X axis.
     Now we have angle can parallel to the X axis.
     '''
-    plt.show()
+    # plt.show()
 
     ''' FULL DATA Calculation !!
     After finding the min angle apply to the full data
@@ -169,7 +169,22 @@ def main():
         section_rotated_height = rotated_data_z[e]
         section_heights.append(section_rotated_height)
     section_height_average = np.average(section_heights)
-    print(section_height_average)
+    # print(section_height_average)
+
+    start = 0
+    tot_heights = []
+    for i in range(len(circle_locations)):
+        # storage_val = circle_locations[i]
+        section_heights = []
+        for j in range(start, circle_locations[i]):
+            section_rotated_height = rotated_data_z[j]
+            section_heights.append(section_rotated_height)
+        section_height_average = np.average(section_heights)
+        tot_heights.append(section_height_average)
+        start = circle_locations[i]
+    print(len(tot_heights))
+
+
 
 
 if __name__ == '__main__':
