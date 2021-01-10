@@ -153,37 +153,27 @@ def main():
     Surface roughness is a unitless peace of the equation that's why you can calculate easily
     '''
 
-    # # Try to finish height, centroid, and area calculations...
-    # section_height_average = []
-    # for g in range(len(circle_locations)+1):
-        # for h in range(circle_locations[g+1], circle_locations[g]):
-            # sec_heights = rotated_data_z[h]
-            # section_height_average.append(sec_heights)
-        # print(len(section_height_average))
-        # print(np.average(section_height_average))
-
-
-    # in range betweeen is missing
-    section_heights = []
-    for e in range(circle_locations[0]):
-        section_rotated_height = rotated_data_z[e]
-        section_heights.append(section_rotated_height)
-    section_height_average = np.average(section_heights)
-    # print(section_height_average)
-
     start = 0
     tot_heights = []
     for i in range(len(circle_locations)):
         # storage_val = circle_locations[i]
         section_heights = []
-        for j in range(start, circle_locations[i]):
+        for j in range(start, circle_locations[i]+1):
             section_rotated_height = rotated_data_z[j]
             section_heights.append(section_rotated_height)
         section_height_average = np.average(section_heights)
         tot_heights.append(section_height_average)
-        start = circle_locations[i]
-    print(len(tot_heights))
+        start = circle_locations[i]+1
+    # print(tot_heights)
+    mean_total_height =np.mean(tot_heights)
+    print("Mean Total height is: ", mean_total_height)
 
+
+    ki = []
+    for i in range(len(circle_locations)):
+        ki_cal = np.sqrt((1/len(circle_locations) * np.square(tot_heights[i] - mean_total_height)))
+    ki.append(ki_cal)
+    print("ki is equal to: ", ki)
 
 
 
