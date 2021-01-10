@@ -144,6 +144,7 @@ def main():
 
     # Determine the circle points
     circle_locations = point_circle_location(rotated_data_x)
+    ########### To be able to see which numbers circle locations have #############
     # print(circle_locations)
 
     '''
@@ -152,14 +153,23 @@ def main():
     Surface roughness is a unitless peace of the equation that's why you can calculate easily
     '''
 
-    # Try to finish height, centroid, and area calculations...
-    section_heights = []
-    for h in range(circle_locations[0]):
-        sec_heights = rotated_data_z[h]
-        section_heights.append(sec_heights)
-    print(len(section_heights))
-    print(np.average(section_heights))
+    # # Try to finish height, centroid, and area calculations...
+    # section_height_average = []
+    # for g in range(len(circle_locations)+1):
+        # for h in range(circle_locations[g+1], circle_locations[g]):
+            # sec_heights = rotated_data_z[h]
+            # section_height_average.append(sec_heights)
+        # print(len(section_height_average))
+        # print(np.average(section_height_average))
 
+
+    # in range betweeen is missing
+    section_heights = []
+    for e in range(circle_locations[0]):
+        section_rotated_height = rotated_data_z[e]
+        section_heights.append(section_rotated_height)
+    section_height_average = np.average(section_heights)
+    print(section_height_average)
 
 
 if __name__ == '__main__':
