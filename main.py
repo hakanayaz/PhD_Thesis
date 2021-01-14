@@ -6,6 +6,12 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 
 
+def Rx(theta):
+    return np.matrix([[1, 0, 0],
+                      [0, math.cos(theta), -math.sin(theta)],
+                      [0, math.sin(theta), math.cos(theta)]])
+
+
 def Rz(theta):
     return np.matrix([[math.cos(theta), -math.sin(theta), 0],
                       [math.sin(theta), math.cos(theta), 0],
@@ -81,6 +87,30 @@ def point_circle_location(rotated_data_x):
     return point_loc
 
 
+def ki_calculation(circle_locations, rotated_data_z):
+    start = 0
+    tot_heights = []
+    for i in range(len(circle_locations)):
+        # storage_val = circle_locations[i]
+        section_heights = []
+        for j in range(start, circle_locations[i]+1):
+            section_rotated_height = abs(rotated_data_z[j])
+            section_heights.append(section_rotated_height)
+        section_height_average = np.average(section_heights)
+        tot_heights.append(section_height_average)
+        start = circle_locations[i]+1
+    # print(tot_heights)
+    mean_total_height =np.mean(tot_heights)
+    print("Mean Total height is: ", mean_total_height)
+
+    ki = []
+    for i in range(len(circle_locations)):
+        ki_cal = np.sqrt((1/len(circle_locations) * np.square(tot_heights[i] - mean_total_height)))
+    ki.append(ki_cal)
+    print("ki is equal to: ", ki)
+    return ki
+
+
 def main():
     # Reading the .txt file
     # .txt file must contain x,y,z values with that order
@@ -126,7 +156,7 @@ def main():
     Plotting the data for getting the angle for paralleling the plot to the X axis.
     Now we have angle can parallel to the X axis.
     '''
-    # plt.show()
+    plt.show()
 
     ''' FULL DATA Calculation !!
     After finding the min angle apply to the full data
@@ -135,6 +165,12 @@ def main():
     rotated_data_x = rot_data_full[0]
     rotated_data_y = rot_data_full[1]
     rotated_data_z = rot_data_full[2]
+
+    # To save all the data from Section-1 after rotated.
+    # np.savetxt("Rotated_Full_Section1_x.txt", rotated_data_x)
+    # np.savetxt("Rotated_Full_Section1_y.txt", rotated_data_y)
+    # np.savetxt("Rotated_Full_Section1_z.txt", rotated_data_z)
+
 
     ''' for Full Data Plot  '''
     # Full_Plot = plt.figure()
@@ -147,34 +183,16 @@ def main():
     ########### To be able to see which numbers circle locations have #############
     # print(circle_locations)
 
+    # Determine the ki value:
+    # y axis is the height representation
+    ki = ki_calculation(circle_locations, rotated_data_z)
+
+
     '''
     After find the points that represents area use Gauss's area formula to
     find the area of the section. Find surface Roughness!!
     Surface roughness is a unitless peace of the equation that's why you can calculate easily
     '''
-
-    start = 0
-    tot_heights = []
-    for i in range(len(circle_locations)):
-        # storage_val = circle_locations[i]
-        section_heights = []
-        for j in range(start, circle_locations[i]+1):
-            section_rotated_height = rotated_data_z[j]
-            section_heights.append(section_rotated_height)
-        section_height_average = np.average(section_heights)
-        tot_heights.append(section_height_average)
-        start = circle_locations[i]+1
-    # print(tot_heights)
-    mean_total_height =np.mean(tot_heights)
-    print("Mean Total height is: ", mean_total_height)
-
-
-    ki = []
-    for i in range(len(circle_locations)):
-        ki_cal = np.sqrt((1/len(circle_locations) * np.square(tot_heights[i] - mean_total_height)))
-    ki.append(ki_cal)
-    print("ki is equal to: ", ki)
-
 
 
 if __name__ == '__main__':
