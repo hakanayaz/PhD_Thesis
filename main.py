@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+# import shapely
+# from shapely.geometry import Polygon
 from mpl_toolkits.mplot3d import Axes3D
 # from matplotlib.mlab import griddata
 from matplotlib import cm
@@ -183,9 +185,47 @@ def main():
     ########### To be able to see which numbers circle locations have #############
     # print(circle_locations)
 
-    # Determine the ki value:
-    # y axis is the height representation
-    ki = ki_calculation(circle_locations, rotated_data_z)
+
+    # start_area_number = 0
+    # total_area = []
+    # for k in range(len(circle_locations)):
+    #
+    #     # Initialize area
+    #     area = 0.0
+    #     n = circle_locations[k]-5
+    #     # Calculate value of shoelace formula
+    #     j = n - 1
+    #     for i in range(start_area_number, n):
+    #         area += (rotated_data_z[j] + rotated_data_z[i]) * (rotated_data_y[j] - rotated_data_y[i])
+    #         j = i  # j is previous vertex to i
+    #
+    #     # Return absolute value
+    #     area = abs(area / 2.0)
+    #     total_area.append(area)
+    #     start_area_number = circle_locations[k] + 1
+    #
+    # # Driver program to test above function
+    # print(total_area)
+
+
+    # Area Calculations are true and it req to clean up the data
+    total_area = []
+    # Initialize area
+    area = 0.0
+    n = 134
+    # Calculate value of shoelace formula
+    j = n - 1
+    for i in range(73, n):
+        area += (rotated_data_y[j] + rotated_data_y[i]) * (rotated_data_z[j] - rotated_data_z[i])
+        j = i  # j is previous vertex to i
+
+    # Return absolute value
+    area = abs(area / 2.0)
+    total_area.append(area)
+
+    print("Section 1-1 Area is = ", total_area)
+
+
 
 
     '''
