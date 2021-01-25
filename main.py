@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import math
 # import shapely
 # from shapely.geometry import Polygon
-from mpl_toolkits.mplot3d import Axes3D
+#from mpl_toolkits.mplot3d import Axes3D
 # from matplotlib.mlab import griddata
-from matplotlib import cm
+#from matplotlib import cm
 
 
 def Rx(theta):
@@ -184,6 +184,35 @@ def main():
     circle_locations = point_circle_location(rotated_data_x)
     ########### To be able to see which numbers circle locations have #############
     # print(circle_locations)
+
+
+    ############################################
+        ###INDEXING###
+
+    rot_full_mean_y = np.mean(rotated_data_y)
+    print("Mean of the y values are:", rot_full_mean_y)
+    rot_full_mean_z = np.mean(rotated_data_z)
+    print("Mean of the z values are:", rot_full_mean_z)
+
+    rot_full_y_mean = []
+    rot_full_z_mean = []
+    for i in range(len(rotated_data_y)):
+        rot_full_y_mean_temp = np.asarray(rotated_data_y[i]-rot_full_mean_y)
+        rot_full_y_mean.append(rot_full_y_mean_temp)
+        rot_full_z_mean_temp = np.asarray(rotated_data_z[i]-rot_full_mean_z)
+        rot_full_z_mean.append(rot_full_z_mean_temp)
+
+    indexing_points = []
+    for i in range(circle_locations[0]):
+        indexing_points_temp = math.atan2(rot_full_z_mean[i], rot_full_y_mean[i])
+        indexing_points.append(indexing_points_temp)    # Angle above y axis
+        indexing_points.append(circle_locations)
+
+    #indexing_points.sort()
+    print(indexing_points)
+
+
+
 
 
     # start_area_number = 0
