@@ -90,6 +90,30 @@ def point_circle_location(rotated_data_x):
     return point_loc
 
 
+def sort_coordinates_y_z(rotated_data_y, rotated_data_z):
+
+    rot_full_y_mean = np.mean(rotated_data_y)
+    rot_full_z_mean = np.mean(rotated_data_y)
+    data_length = len(rotated_data_y) # 72?
+
+    indexing_angles = []
+    for i in range(data_length):
+        indexing_angle_temp = math.atan2(rotated_data_z[i]-rot_full_z_mean, rotated_data_y[i]-rot_full_y_mean)
+        indexing_angles.append(indexing_angle_temp)    # Angle above y axis
+
+    df = pd.DataFrame({
+        'y': rotated_data_y,      # y coordinates
+        'z': rotated_data_z,      # z coordinates
+        'angle': indexing_angles  # indexing_angle (rad.)
+    })
+
+    Section1_1_sorted_pandas = df.sort_values(by=['angle'], ascending=False)
+    Section1_1_sorted = Section1_1_sorted_pandas.to_numpy()
+
+    y_coord_idxed = Section1_1_sorted[:, 1]
+    z_coord_idxed = Section1_1_sorted[:, 2]
+    return y_coord_idxed, z_coord_idxed, np.asarray(indexing_angles)
+
 def idxed_coordinates_y_z_and_angles(rotated_data_y, rotated_data_z, rot_full_mean_y, rot_full_mean_z, circle_locations):
 
     rot_full_y_mean = []
@@ -194,44 +218,54 @@ def main():
     ########### To be able to see which numbers circle locations have #############
     # print(circle_locations)
 
-
-    ########################  INDEXING   ##########################
-
     rot_full_mean_y = np.mean(rotated_data_y)
     # print("Mean of the y values are:", rot_full_mean_y)
     rot_full_mean_z = np.mean(rotated_data_z)
     # print("Mean of the z values are:", rot_full_mean_z)
 
     # for MAKE IT ALL OF THEM
-    # last_index=1
-    # cir_idx=0
-    #
+    last_index=0
+    cir_idx=0
+
+    all_circles = []
+    for k in circle_locations:
+        # k has the last item's location
+        # last_index has the first item's location
+        circle_points = np.arange(last_index, k)
+        y_slice = rotated_data_y[last_index:k]
+        z_slice = rotated_data_z[last_index:k]
+        sorted_results = sort_coordinates_y_z(y_slice, z_slice)
+        all_circles.append(sorted_results)
+        last_index = k
+    print(all_circles[1:2])  # now I can calculate all sections indexed results...
+
+
     # for k in range(last_index, circle_locations[cir_idx]):
     #     ## whatever you want to do
     #     last_index = circle_locations[cir_idx]+1
     #     cir_idx = cir_idx+1
-
-    [y_coord_idxed, z_coord_idxed, indexing_angles] = idxed_coordinates_y_z_and_angles(rotated_data_y,rotated_data_z,rot_full_mean_y,rot_full_mean_z,circle_locations)
-
-
+    #
+    # [y_coord_idxed, z_coord_idxed, indexing_angles] = idxed_coordinates_y_z_and_angles(rotated_data_y,rotated_data_z,rot_full_mean_y,rot_full_mean_z,circle_locations)
 
 
-    # Area Calculations are true and it req to clean up the data
-    total_area = []
-    # Initialize area
-    area = 0.0
-    n = circle_locations[0]
-    # Calculate value of shoelace formula
-    j = n - 1
-    for i in range(0, n):
-        area += (y_coord_idxed[j] + y_coord_idxed[i]) * (z_coord_idxed[j] - z_coord_idxed[i])
-        j = i  # j is previous vertex to i
 
-    # Return absolute value
-    area = abs(area / 2.0)
-    total_area.append(area)
 
-    print("Section 1-1 Area is = ", total_area)
+    # # Area Calculations are true and it req to clean up the data
+    # total_area = []
+    # # Initialize area
+    # area = 0.0
+    # n = circle_locations[0]
+    # # Calculate value of shoelace formula
+    # j = n - 1
+    # for i in range(0, n):
+    #     area += (y_coord_idxed[j] + y_coord_idxed[i]) * (z_coord_idxed[j] - z_coord_idxed[i])
+    #     j = i  # j is previous vertex to i
+    #
+    # # Return absolute value
+    # area = abs(area / 2.0)
+    # total_area.append(area)
+    #
+    # print("Section 1-1 Area is = ", total_area)
 
 
 
