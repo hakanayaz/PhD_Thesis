@@ -119,7 +119,7 @@ def idxed_coordinates_y_z(rotated_data_y, rotated_data_z, rot_full_mean_y, rot_f
 
     y_coord_idxed = Section1_1_sorted[:, 1]
     z_coord_idxed = Section1_1_sorted[:, 2]
-    return y_coord_idxed, z_coord_idxed
+    return y_coord_idxed, z_coord_idxed, indexing_angles
 
 
 def main():
@@ -211,7 +211,9 @@ def main():
     #     last_index = circle_locations[cir_idx]+1
     #     cir_idx = cir_idx+1
 
-    [y_coord_idxed, z_coord_idxed] = idxed_coordinates_y_z(rotated_data_y,rotated_data_z,rot_full_mean_y,rot_full_mean_z,circle_locations)
+    [y_coord_idxed, z_coord_idxed, indexing_angles] = idxed_coordinates_y_z(rotated_data_y,rotated_data_z,rot_full_mean_y,rot_full_mean_z,circle_locations)
+
+    print("Indexing Angles are: ", indexing_angles)
 
 
     # Area Calculations are true and it req to clean up the data
