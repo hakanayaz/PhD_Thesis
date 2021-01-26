@@ -90,7 +90,7 @@ def point_circle_location(rotated_data_x):
     return point_loc
 
 
-def idxed_coordinates_y_z(rotated_data_y, rotated_data_z, rot_full_mean_y, rot_full_mean_z, circle_locations):
+def idxed_coordinates_y_z_and_angles(rotated_data_y, rotated_data_z, rot_full_mean_y, rot_full_mean_z, circle_locations):
 
     rot_full_y_mean = []
     rot_full_z_mean = []
@@ -211,9 +211,9 @@ def main():
     #     last_index = circle_locations[cir_idx]+1
     #     cir_idx = cir_idx+1
 
-    [y_coord_idxed, z_coord_idxed, indexing_angles] = idxed_coordinates_y_z(rotated_data_y,rotated_data_z,rot_full_mean_y,rot_full_mean_z,circle_locations)
+    [y_coord_idxed, z_coord_idxed, indexing_angles] = idxed_coordinates_y_z_and_angles(rotated_data_y,rotated_data_z,rot_full_mean_y,rot_full_mean_z,circle_locations)
 
-    print("Indexing Angles are: ", indexing_angles)
+
 
 
     # Area Calculations are true and it req to clean up the data
