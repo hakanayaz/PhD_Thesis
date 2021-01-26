@@ -17,9 +17,9 @@ def main():
     # .txt file must contain x,y,z values with that order
     X_main, Y_main, Z_main = np.loadtxt('Section1.txt').T
 
-    x_sample_4degree = X_main[73:144]
-    y_sample_4degree = Y_main[73:144]
-    z_sample_4degree = Z_main[73:144]
+    x_sample_4degree = X_main[:72]
+    y_sample_4degree = Y_main[:72]
+    z_sample_4degree = Z_main[:72]
 
     print("Load a ply point cloud, print it, and render it")
     pcd = o3d.io.read_point_cloud("Section1.ply")
@@ -30,10 +30,10 @@ def main():
                                     # front=[0.4257, -0.2125, -0.8795],
                                     # lookat=[2.6172, 2.0475, 1.532],
                                     # up=[-0.0694, -0.9768, 0.2024])
-    alpha = 2
-    mesh = o3d.geometry.TriangleMesh.create_from_point_cloud_alpha_shape(pcd, alpha)
-    mesh.compute_vertex_normals()
-    #o3d.visualization.draw_geometries([mesh], mesh_show_back_face=True)
+    # alpha = 2
+    # mesh = o3d.geometry.TriangleMesh.create_from_point_cloud_alpha_shape(pcd, alpha)
+    # mesh.compute_vertex_normals()
+    # o3d.visualization.draw_geometries([mesh], mesh_show_back_face=True)
 
 
     # xi = np.linspace(min(x_sample_4degree), max(x_sample_4degree))

@@ -1,11 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import pandas as pd
 # import shapely
 # from shapely.geometry import Polygon
-#from mpl_toolkits.mplot3d import Axes3D
-# from matplotlib.mlab import griddata
-#from matplotlib import cm
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.mlab import griddata
+from matplotlib import cm
 
 
 def Rx(theta):
@@ -89,28 +90,36 @@ def point_circle_location(rotated_data_x):
     return point_loc
 
 
-def ki_calculation(circle_locations, rotated_data_z):
-    start = 0
-    tot_heights = []
-    for i in range(len(circle_locations)):
-        # storage_val = circle_locations[i]
-        section_heights = []
-        for j in range(start, circle_locations[i]+1):
-            section_rotated_height = abs(rotated_data_z[j])
-            section_heights.append(section_rotated_height)
-        section_height_average = np.average(section_heights)
-        tot_heights.append(section_height_average)
-        start = circle_locations[i]+1
-    # print(tot_heights)
-    mean_total_height =np.mean(tot_heights)
-    print("Mean Total height is: ", mean_total_height)
+def idxed_coordinates_y_z(rotated_data_y, rotated_data_z, rot_full_mean_y, rot_full_mean_z, circle_locations):
 
-    ki = []
-    for i in range(len(circle_locations)):
-        ki_cal = np.sqrt((1/len(circle_locations) * np.square(tot_heights[i] - mean_total_height)))
-    ki.append(ki_cal)
-    print("ki is equal to: ", ki)
-    return ki
+    rot_full_y_mean = []
+    rot_full_z_mean = []
+    for i in range(len(rotated_data_y)):
+        rot_full_y_mean_temp = np.asarray(rotated_data_y[i]-rot_full_mean_y)
+        rot_full_y_mean.append(rot_full_y_mean_temp)
+        rot_full_z_mean_temp = np.asarray(rotated_data_z[i]-rot_full_mean_z)
+        rot_full_z_mean.append(rot_full_z_mean_temp)
+
+    indexing_angles = []
+    for i in range(circle_locations[0]):
+        indexing_angle_temp = math.atan2(rot_full_z_mean[i], rot_full_y_mean[i])
+        indexing_angles.append(indexing_angle_temp)    # Angle above y axis
+
+    cl_start = 1
+    cl_end = circle_locations[0]
+    df = pd.DataFrame({
+        'col1': range(cl_start, cl_end+1),             # old_indexing_number
+        'col2': rotated_data_y[cl_start: cl_end+1],      # y coordinates
+        'col3': rotated_data_z[cl_start: cl_end+1],      # z coordinates
+        'col4': indexing_angles                         # indexing_angle (rad.)
+    })
+
+    Section1_1_sorted_pandas = df.sort_values(by=['col4'], ascending=False)
+    Section1_1_sorted = Section1_1_sorted_pandas.to_numpy()
+
+    y_coord_idxed = Section1_1_sorted[:, 1]
+    z_coord_idxed = Section1_1_sorted[:, 2]
+    return y_coord_idxed, z_coord_idxed
 
 
 def main():
@@ -158,7 +167,7 @@ def main():
     Plotting the data for getting the angle for paralleling the plot to the X axis.
     Now we have angle can parallel to the X axis.
     '''
-    plt.show()
+    # plt.show()
 
     ''' FULL DATA Calculation !!
     After finding the min angle apply to the full data
@@ -186,35 +195,47 @@ def main():
     # print(circle_locations)
 
 
-    ############################################
-        ###INDEXING###
+    ########################  INDEXING   ##########################
 
     rot_full_mean_y = np.mean(rotated_data_y)
-    print("Mean of the y values are:", rot_full_mean_y)
+    # print("Mean of the y values are:", rot_full_mean_y)
     rot_full_mean_z = np.mean(rotated_data_z)
-    print("Mean of the z values are:", rot_full_mean_z)
+    # print("Mean of the z values are:", rot_full_mean_z)
 
-    rot_full_y_mean = []
-    rot_full_z_mean = []
-    for i in range(len(rotated_data_y)):
-        rot_full_y_mean_temp = np.asarray(rotated_data_y[i]-rot_full_mean_y)
-        rot_full_y_mean.append(rot_full_y_mean_temp)
-        rot_full_z_mean_temp = np.asarray(rotated_data_z[i]-rot_full_mean_z)
-        rot_full_z_mean.append(rot_full_z_mean_temp)
+    # for MAKE IT ALL OF THEM
+    # last_index=1
+    # cir_idx=0
+    #
+    # for k in range(last_index, circle_locations[cir_idx]):
+    #     ## whatever you want to do
+    #     last_index = circle_locations[cir_idx]+1
+    #     cir_idx = cir_idx+1
 
-    indexing_points = []
-    for i in range(circle_locations[0]):
-        indexing_points_temp = math.atan2(rot_full_z_mean[i], rot_full_y_mean[i])
-        indexing_points.append(indexing_points_temp)    # Angle above y axis
-        indexing_points.append(circle_locations)
-
-    #indexing_points.sort()
-    print(indexing_points)
+    [y_coord_idxed, z_coord_idxed] = idxed_coordinates_y_z(rotated_data_y,rotated_data_z,rot_full_mean_y,rot_full_mean_z,circle_locations)
 
 
+    # Area Calculations are true and it req to clean up the data
+    total_area = []
+    # Initialize area
+    area = 0.0
+    n = circle_locations[0]
+    # Calculate value of shoelace formula
+    j = n - 1
+    for i in range(0, n):
+        area += (y_coord_idxed[j] + y_coord_idxed[i]) * (z_coord_idxed[j] - z_coord_idxed[i])
+        j = i  # j is previous vertex to i
+
+    # Return absolute value
+    area = abs(area / 2.0)
+    total_area.append(area)
+
+    print("Section 1-1 Area is = ", total_area)
 
 
 
+
+
+    ############### AREA CALCULATION ################
     # start_area_number = 0
     # total_area = []
     # for k in range(len(circle_locations)):
@@ -236,23 +257,6 @@ def main():
     # # Driver program to test above function
     # print(total_area)
 
-
-    # Area Calculations are true and it req to clean up the data
-    total_area = []
-    # Initialize area
-    area = 0.0
-    n = 134
-    # Calculate value of shoelace formula
-    j = n - 1
-    for i in range(73, n):
-        area += (rotated_data_y[j] + rotated_data_y[i]) * (rotated_data_z[j] - rotated_data_z[i])
-        j = i  # j is previous vertex to i
-
-    # Return absolute value
-    area = abs(area / 2.0)
-    total_area.append(area)
-
-    print("Section 1-1 Area is = ", total_area)
 
 
 
