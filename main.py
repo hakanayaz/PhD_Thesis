@@ -5,7 +5,7 @@ import pandas as pd
 # import shapely
 # from shapely.geometry import Polygon
 from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.mlab import griddata
+#from matplotlib.mlab import griddata
 from matplotlib import cm
 
 
