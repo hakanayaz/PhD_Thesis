@@ -93,7 +93,7 @@ def point_circle_location(rotated_data_x):
 def sort_coordinates_y_z(rotated_data_y, rotated_data_z):
 
     rot_full_y_mean = np.mean(rotated_data_y)
-    rot_full_z_mean = np.mean(rotated_data_y)
+    rot_full_z_mean = np.mean(rotated_data_z)
     data_length = len(rotated_data_y) # 72?
 
     indexing_angles = []
@@ -110,9 +110,11 @@ def sort_coordinates_y_z(rotated_data_y, rotated_data_z):
     Section1_1_sorted_pandas = df.sort_values(by=['angle'], ascending=False)
     Section1_1_sorted = Section1_1_sorted_pandas.to_numpy()
 
-    y_coord_idxed = Section1_1_sorted[:, 1]
-    z_coord_idxed = Section1_1_sorted[:, 2]
+    y_coord_idxed = Section1_1_sorted[:, 0]
+    z_coord_idxed = Section1_1_sorted[:, 1]
+    indexing_angles = Section1_1_sorted[:, 2]
     return y_coord_idxed, z_coord_idxed, np.asarray(indexing_angles)
+
 
 def idxed_coordinates_y_z_and_angles(rotated_data_y, rotated_data_z, rot_full_mean_y, rot_full_mean_z, circle_locations):
 
@@ -216,17 +218,18 @@ def main():
     # Determine the circle points
     circle_locations = point_circle_location(rotated_data_x)
     ########### To be able to see which numbers circle locations have #############
-    # print(circle_locations)
+    print(circle_locations)
+    #np.savetxt("circle_locations.txt", circle_locations)
 
     rot_full_mean_y = np.mean(rotated_data_y)
     # print("Mean of the y values are:", rot_full_mean_y)
     rot_full_mean_z = np.mean(rotated_data_z)
     # print("Mean of the z values are:", rot_full_mean_z)
 
+
     # for MAKE IT ALL OF THEM
     last_index=0
     cir_idx=0
-
     all_circles = []
     for k in circle_locations:
         # k has the last item's location
@@ -237,7 +240,8 @@ def main():
         sorted_results = sort_coordinates_y_z(y_slice, z_slice)
         all_circles.append(sorted_results)
         last_index = k
-    print(all_circles[1:2])  # now I can calculate all sections indexed results...
+    print(all_circles[1:5])  # now I can calculate all sections indexed results...
+
 
 
     # for k in range(last_index, circle_locations[cir_idx]):
