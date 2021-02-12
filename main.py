@@ -240,7 +240,7 @@ def main():
         sorted_results = sort_coordinates_y_z(y_slice, z_slice)
         all_circles.append(sorted_results)
         last_index = k
-    print(all_circles[1:5])  # now I can calculate all sections indexed results...
+    print(all_circles[0:5])  # now I can calculate all sections indexed results...
 
 
 
@@ -282,7 +282,7 @@ def main():
     #
     #     # Initialize area
     #     area = 0.0
-    #     n = circle_locations[k]-5
+    #     n = circle_locations[k]
     #     # Calculate value of shoelace formula
     #     j = n - 1
     #     for i in range(start_area_number, n):
@@ -296,9 +296,6 @@ def main():
     #
     # # Driver program to test above function
     # print(total_area)
-
-
-
 
 
     '''

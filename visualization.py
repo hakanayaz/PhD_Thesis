@@ -7,22 +7,37 @@ import open3d as o3d
 # from mpl_toolkits.mplot3d import Axes3D
 # #from matplotlib.mlab import griddata
 # from matplotlib import cm
-# import scipy as sp
+import scipy
+import scipy as sp
 # import scipy.interpolate.ndgriddata
 # import plotly.graph_objects as go
+# import whitebox
 
 
 def main():
-    # Reading the .txt file
-    # .txt file must contain x,y,z values with that order
-    # X_main, Y_main, Z_main = np.loadtxt('Section1.txt').T
+
+    # wbt = whitebox.WhiteboxTools()
+    # wbt.work_dir = "/path/to/data/"
+    # in_lidar = "lidar_data.las"
+    # in_image = "airphoto.tif"
+    # out_lidar = "colourized_lidar.las"
+    # wbt.lidar_colourize(in_lidar, in_image, out_lidar)
+
+
+###########################
+    # # Reading the .txt file
+    # # .txt file must contain x,y,z values with that order
+    # X_main = np.loadtxt('Rotated_Full_Section1_x.txt').T
+    # Y_main = np.loadtxt('Rotated_Full_Section1_y.txt').T
+    # Z_main = np.loadtxt('Rotated_Full_Section1_z.txt').T
     #
-    # x_sample_4degree = X_main[:72]
-    # y_sample_4degree = Y_main[:72]
-    # z_sample_4degree = Z_main[:72]
+    # x_sample_4degree = X_main[0:1000]
+    # y_sample_4degree = Y_main[0:1000]
+    # z_sample_4degree = Z_main[0:1000]
+###########################
 
     # create paths and load data
-    point_cloud = np.loadtxt('Section1.txt', skiprows=1)
+    point_cloud = np.loadtxt('Section1_mesh.ply', skiprows=1)
     # Format to open3d usable objects
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(point_cloud[:, :3])
@@ -41,9 +56,6 @@ def main():
     dec_mesh = bpa_mesh.simplify_quadric_decimation(100000)
 
 
-
-
-
     # print("Load a ply point cloud, print it, and render it")
     # pcd = o3d.io.read_point_cloud("Section1.ply")
     # print(pcd)
@@ -53,17 +65,16 @@ def main():
     #                                 # front=[0.4257, -0.2125, -0.8795],
     #                                 # lookat=[2.6172, 2.0475, 1.532],
     #                                 # up=[-0.0694, -0.9768, 0.2024])
-    # alpha = 2
+    # alpha = 1
     # mesh = o3d.geometry.TriangleMesh.create_from_point_cloud_alpha_shape(pcd, alpha)
     # mesh.compute_vertex_normals()
     # o3d.visualization.draw_geometries([mesh], mesh_show_back_face=True)
-
-
+    #
     # xi = np.linspace(min(x_sample_4degree), max(x_sample_4degree))
     # yi = np.linspace(min(y_sample_4degree), max(y_sample_4degree))
     # X, Y = np.meshgrid(xi, yi)
-    # interpolation
-    # z = scipy.interpolate.griddata(x_sample_4degree, y_sample_4degree, z_sample_4degree, xi, yi, interp='linear')
+    # # interpolation
+    # z = scipy.interpolate.griddata(x_sample_4degree, y_sample_4degree, z_sample_4degree, xi, yi, interp='nearest')
 
 ########################
     # z = z_sample_4degree
@@ -90,7 +101,8 @@ def main():
     # ax2.set_zlabel('Z Label', fontsize=10)
     # ax2.scatter3D(x_sample_4degree, y_sample_4degree, z_sample_4degree, c=z_sample_4degree, cmap=plt.cm.jet)
     #
-    plt.show()
+    # plt.show()
+
 
 if __name__ == '__main__':
     main()
