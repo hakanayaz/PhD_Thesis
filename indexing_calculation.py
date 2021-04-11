@@ -58,49 +58,46 @@ def main():
         all_circles_angles.append(sorted_results_angles)
         last_index = k
 
-
     ############## AREA CALCULATION ################
-    # k = 0
-    # total_area = []
-    # # Initialize area
-    # area = 0.0
-    # n = int(circle_locations[k])
-    # # Calculate value of shoelace formula
-    # j = n - 1
-    # for i in range(0, n):
-    #     area += (all_circles_y[k][j] + all_circles_y[k][i]) * (all_circles_z[k][j] - all_circles_z[k][i])
-    #     j = i  # j is previous vertex to i
-    #
-    # # Return absolute value
-    # area = abs(area / 2.0)
-    # total_area.append(area)
-    #
-    # print("Section 1-1 Area is = ", total_area)
-
-
-
-    start_area_number = 0
+    k = 0
     total_area = []
-    for k in range(len(circle_locations)):
+    # # Initialize area
+    area = 0.0
+    n = int(circle_locations[k])
+    # # Calculate value of shoelace formula
+    j = n - 1
+    for i in range(k, n):
+        area += (all_circles_z[k][j] + all_circles_z[k][i]) * (all_circles_y[k][j] - all_circles_y[k][i])
+        j = i  # j is previous vertex to i
 
-        # Initialize area
-        area = 0.0
-        n = int(circle_locations[k])
-        # Calculate value of shoelace formula
-        j = n - 1
+    # Return absolute value
+    area = abs(area / 2.0)
+    total_area.append(area)
 
-        for i in range(start_area_number, n):
-            area += (all_circles_z[k][j] + all_circles_z[k][i]) * (all_circles_y[k][j] - all_circles_y[k][i])
-            j = i  # j is previous vertex to i
-
-        # Return absolute value
-        area = abs(area / 2.0)
-        total_area.append(area)
-        start_area_number = circle_locations[k] + 1
-
-    # Driver program to test above function
-    print(total_area)
-
+    print("Section 1-1 Area is = ", total_area)
+########################################################################
+    # start_area_number = 0
+    # total_area = []
+    # for k in range(len(circle_locations)):
+    #
+    #     # Initialize area
+    #     area = 0.0
+    #     n = int(circle_locations[k])
+    #     # Calculate value of shoelace formula
+    #     j = n - 1
+    #
+    #     for i in range(int(start_area_number), int(n+1)):
+    #         area += (all_circles_z[k][j] + all_circles_z[k][i]) * (all_circles_y[k][j] - all_circles_y[k][i])
+    #         j = i  # j is previous vertex to i
+    #
+    #     # Return absolute value
+    #     area = abs(area / 2.0)
+    #     total_area.append(area)
+    #     start_area_number = circle_locations[k] + 1
+    #
+    # # Driver program to test above function
+    # print(total_area)
+########################################################################
 
     # # Calculated data save to the excel file
     # sorted_y = pd.DataFrame(all_circles_y)

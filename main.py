@@ -276,26 +276,26 @@ def main():
 
 
     ############### AREA CALCULATION ################
-    # start_area_number = 0
-    # total_area = []
-    # for k in range(len(circle_locations)):
-    #
-    #     # Initialize area
-    #     area = 0.0
-    #     n = circle_locations[k]
-    #     # Calculate value of shoelace formula
-    #     j = n - 1
-    #     for i in range(start_area_number, n):
-    #         area += (rotated_data_z[j] + rotated_data_z[i]) * (rotated_data_y[j] - rotated_data_y[i])
-    #         j = i  # j is previous vertex to i
-    #
-    #     # Return absolute value
-    #     area = abs(area / 2.0)
-    #     total_area.append(area)
-    #     start_area_number = circle_locations[k] + 1
-    #
-    # # Driver program to test above function
-    # print(total_area)
+    start_area_number = 0
+    total_area = []
+    for k in range(len(circle_locations)):
+
+        # Initialize area
+        area = 0.0
+        n = circle_locations[k]
+        # Calculate value of shoelace formula
+        j = n - 1
+        for i in range(start_area_number, n):
+            area += (rotated_data_z[j] + rotated_data_z[i]) * (rotated_data_y[j] - rotated_data_y[i])
+            j = i  # j is previous vertex to i
+
+        # Return absolute value
+        area = abs(area / 2.0)
+        total_area.append(area)
+        start_area_number = circle_locations[k] + 1
+
+    # Driver program to test above function
+    print(total_area)
 
 
     '''
